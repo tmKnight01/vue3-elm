@@ -16,7 +16,7 @@ interface City {
 }
 
 export const cityGuess = async (): Promise<City> =>
-  await fetch("/v1/cities", {
+  await fetch("v1/cities", {
     params: {
       type: "guess",
     },

@@ -16,10 +16,19 @@ export default defineConfig({
             additionalData: ''
           }
         }
+  },
+  envDir:'env',
+  server:{
+    port:5173,
+    proxy:{
+      "/api":{
+        target:'http://192.168.0.83:3000/',
+        changeOrigin:true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      }
+    }
   }
-  // preprossorOptions: {
 
-  // }
   
 })
 

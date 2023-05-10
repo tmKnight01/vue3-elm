@@ -5,4 +5,6 @@ import "./styles/common.scss";
 import Home from "@/pages/Home.vue";
 import "@/config/rem.js";
 
+console.log('VITE_NODE_ENV',import.meta.env);
+
 createApp(Home).mount("#app");

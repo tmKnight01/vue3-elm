@@ -60,7 +60,6 @@
 </template>
 
 <script setup lang="ts">
-import { Circle } from "vant";
 import { reactive, computed, onMounted } from "vue";
 import { cityGuess } from "../service/index";
 interface reactiveData {
