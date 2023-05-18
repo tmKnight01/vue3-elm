@@ -1,11 +1,10 @@
 import axios, {
-  AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import { showToast } from "vant";
-
+import { closeNotify, showToast } from "vant";
+import 'vant/es/toast/style';
 const URL =
   import.meta.env.VITE_NODE_ENV == "development"
     ? "http://192.168.0.83:3000"
@@ -14,8 +13,8 @@ const URL =
 enum RequestEnums {
   TIMEOUT = 20000,
   OVERDUE = 600, // 登录失效
-  FAIL = 999, // 请求失败
-  SUCCESS = 200, // 请求成功
+  FAIL = -1, // 请求失败
+  SUCCESS = 0 , // 请求成功 但返回值有问题
 }
 
 // 定义请求响应参数， 不含data
@@ -30,11 +29,12 @@ const config: AxiosRequestConfig = {
   baseURL: URL,
   timeout: RequestEnums.TIMEOUT,
   withCredentials: true,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
+  // headers: {
+  //   Accept: "application/json",
+  //   "Content-Type": "application/json",
     
-  },
+  // },
+  
 };
 
 class Fetch {
@@ -48,10 +48,12 @@ class Fetch {
 
     this.service.interceptors.response.use(
       (res: AxiosResponse) => {
-        const { data, status } = res;
-        if (status !== RequestEnums.SUCCESS) {
-          showToast({ message: "Fetch Fail", type: "fail" });
-          throw Error();
+        const { data } = res;
+        console.log('status',Boolean(Number(data.status) === RequestEnums.SUCCESS));
+        if ( Boolean(Number(data.status) === RequestEnums.SUCCESS) ) {
+          console.log('test')
+          showToast({ message:data.message , type: "fail" });
+          throw Error(data.message);
         }
 
         return data;

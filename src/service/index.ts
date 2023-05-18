@@ -1,5 +1,5 @@
 import fetch from "../fetch/index";
-import { City, Capt } from "../constants/service";
+import { City, Capt, loginParams } from "../constants/service";
 
 /*
 获取首页默认地址
@@ -26,3 +26,13 @@ export const cityHotGuess = async (): Promise<Array<City>> =>
 */
 export const cityChapt = async (): Promise<Capt> =>
   await fetch("v1/captchs", {});
+
+/*
+登录接口
+*/
+export const login = async (data: loginParams): Promise<any> =>
+  await fetch("v2/login", {
+    method: "post",
+    data,
+    headers: { "Content-Type": "multipart/form-data" },
+  });

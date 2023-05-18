@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import HeaderTop from '@/components/Header.vue';
 import { showToast } from "vant";
-import { cityChapt } from '../../service';
+import { cityChapt, login } from '../../service';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import 'vant/es/toast/style';
@@ -55,17 +55,27 @@ const checked = ref<boolean>(false);
 const imgUrl = ref<string>('');
 
 
-const onSubmit = (values: any) => {
-    console.log('values',values);
-    if (!/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*?&])[^\s]{8,}$/.test(values.password)) {
-        showToast({ message: ' 密码必须大于8位，并且包含数字，英文及特殊字符' });
-        return;
+const onSubmit = async (values: any) => {
+    try {
+        console.log('values', values);
+        if (!/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*?&])[^\s]{8,}$/.test(values.password)) {
+            showToast({ message: ' 密码必须大于8位，并且包含数字，英文及特殊字符' });
+            return;
+        }
+        console.log('cap', cap.value)
+        if (Number(values.cap) !== cap.value) {
+            showToast({ message: '验证码不正确' });
+            return;
+        }
+        const res = await login({ ...values });
+       if(res){
+        console.log('res',res);
+        showToast({ message: '登录成功' });
+       }
+    } catch (err) {
+        console.log('err', err);
     }
-    console.log('cap',cap.value)
-    if(Number(values.cap)!==cap.value){
-        showToast({message:'验证码不正确'});
-        return;
-    }
+
 };
 
 const getchapt = async () => {

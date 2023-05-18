@@ -21,3 +21,12 @@ export interface Capt {
   code: string;
   cap: number;
 }
+
+/*用户信息*/
+
+/*登录接口入参*/
+export interface loginParams {
+  cap: string;
+  password: string;
+  username: string;
+}
