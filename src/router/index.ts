@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import { defineAsyncComponent } from "vue";
 
 const routes: readonly RouteRecordRaw[] = [
   {

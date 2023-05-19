@@ -29,7 +29,7 @@
         </van-cell-group>
         <p class="changeImg"> <span :onClick="getchapt">看不清? 换一张</span></p>
         <div class="login_form_submit">
-            <van-button round block type="primary" size="mini" style="color:white" native-type="submit">
+            <van-button round :loading="isLoading"  block type="primary" size="mini" style="color:white" native-type="submit">
                 提交
             </van-button>
         </div>
@@ -45,11 +45,16 @@ import { cityChapt, login } from '../../service';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import 'vant/es/toast/style';
+import {useUserInfo} from '@/store/userinfo';
+import { useRouter } from 'vue-router'
 
+
+const router = useRouter();
+const store = useUserInfo();
 const username = ref<string>('');
 const password = ref<number>();
 const yanzheng = ref<number | undefined>();
-
+const isLoading = ref<boolean>(false);
 const cap = ref<number | null>();
 const checked = ref<boolean>(false);
 const imgUrl = ref<string>('');
@@ -57,6 +62,7 @@ const imgUrl = ref<string>('');
 
 const onSubmit = async (values: any) => {
     try {
+         isLoading.value = true;
         console.log('values', values);
         if (!/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*?&])[^\s]{8,}$/.test(values.password)) {
             showToast({ message: ' 密码必须大于8位，并且包含数字，英文及特殊字符' });
@@ -70,10 +76,15 @@ const onSubmit = async (values: any) => {
         const res = await login({ ...values });
        if(res){
         console.log('res',res);
+       
+        store.record_userinfo(res.userinfo);
         showToast({ message: '登录成功' });
+        router.go(-1);
        }
     } catch (err) {
         console.log('err', err);
+    } finally{
+        isLoading.value = false;
     }
 
 };

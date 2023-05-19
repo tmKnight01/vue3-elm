@@ -1,6 +1,7 @@
 import fetch from "../fetch/index";
 import { City, Capt, loginParams } from "../constants/service";
-
+import { UserInfo } from "@/constants/store";
+import { getStore } from "@/utils/index";
 /*
 获取首页默认地址
 */
@@ -35,4 +36,16 @@ export const login = async (data: loginParams): Promise<any> =>
     method: "post",
     data,
     headers: { "Content-Type": "multipart/form-data" },
+  });
+
+/*
+  获取用户信息
+  */
+
+export const getUser = async (): Promise<UserInfo> =>
+  await fetch("/v2/getUser", {
+    method: "get",
+    params: {
+      user_id: getStore("user_id"),
+    },
   });

@@ -7,9 +7,9 @@
         </span>
       </template>
 
-      <template v-slot:right>
+      <!-- <template v-slot:right>
         <span class="head_info" @click="toLogin">登录|注册</span>
-      </template>
+      </template> -->
 
     </header-top>
     <nav class="city_nav">
@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import { reactive, computed, onMounted } from "vue";
 import { cityGuess, cityHotGuess } from "../../service/index";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import HeaderTop from '@/components/Header.vue';
 interface reactiveData {
   guessCity: string; //当前城市
@@ -62,7 +62,7 @@ interface reactiveData {
   groupcity: Record<string, unknown>; //所有城市列表
 }
 
-const router = useRouter();
+// const router = useRouter();
 
 const info = reactive({
   guessCity: "", //当前城市
@@ -96,12 +96,12 @@ onMounted(async () => {
 });
 
 
-const toLogin = () => {
-  router.push({
-    name: 'login',
+// const toLogin = () => {
+//   router.push({
+//     name: 'login',
 
-  })
-}
+//   })
+// }
 </script>
 
 <style lang="scss" scoped>
