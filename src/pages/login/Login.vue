@@ -1,11 +1,5 @@
 <template>
-    <header-top titleText="登录">
-        <template v-slot:left>
-            <van-icon name="arrow-left" color="white" />
-        </template>
-
-    </header-top>
-
+    <header-top titleText="登录"  :is-show-right="false"/>
     <van-form @submit="onSubmit" class="login_form">
         <van-cell-group inset>
             <van-field class="login_form_item" v-model="username" name="username" label="用户名" placeholder="用户名"
@@ -29,7 +23,8 @@
         </van-cell-group>
         <p class="changeImg"> <span :onClick="getchapt">看不清? 换一张</span></p>
         <div class="login_form_submit">
-            <van-button round :loading="isLoading"  block type="primary" size="mini" style="color:white" native-type="submit">
+            <van-button round :loading="isLoading" block type="primary" size="mini" style="color:white"
+                native-type="submit">
                 提交
             </van-button>
         </div>
@@ -45,7 +40,7 @@ import { cityChapt, login } from '../../service';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import 'vant/es/toast/style';
-import {useUserInfo} from '@/store/userinfo';
+import { useUserInfo } from '@/store/userinfo';
 import { useRouter } from 'vue-router'
 
 
@@ -62,7 +57,7 @@ const imgUrl = ref<string>('');
 
 const onSubmit = async (values: any) => {
     try {
-         isLoading.value = true;
+        isLoading.value = true;
         console.log('values', values);
         if (!/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*?&])[^\s]{8,}$/.test(values.password)) {
             showToast({ message: ' 密码必须大于8位，并且包含数字，英文及特殊字符' });
@@ -74,16 +69,16 @@ const onSubmit = async (values: any) => {
             return;
         }
         const res = await login({ ...values });
-       if(res){
-        console.log('res',res);
-       
-        store.record_userinfo(res.userinfo);
-        showToast({ message: '登录成功' });
-        router.go(-1);
-       }
+        if (res) {
+            console.log('res', res);
+
+            store.record_userinfo(res);
+            showToast({ message: '登录成功' });
+            router.go(-1);
+        }
     } catch (err) {
         console.log('err', err);
-    } finally{
+    } finally {
         isLoading.value = false;
     }
 

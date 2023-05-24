@@ -2,15 +2,18 @@
 
 <template>
     <header class="header_top">
-        <slot name="left"></slot>
+        <van-icon v-if="leftBtn" @click="goBack" name="arrow-left" color="white" />
+
+        <slot  v-else name="left"></slot>
         <section class="title_head ellipsis">
             <span class="title_text">{{ titleText }}</span>
         </section>
-        <router-link :to="userInfo ? '/profile' : '/login'" v-if="isShow">
-            
-           
+        <router-link :to="userInfo.username ? '/profile' : '/login'" v-if="isShowRight">
+            <span v-if="userInfo.username" class="user_info">
+             
+                {{ userInfo.username }}
                 <van-icon v-if="userInfo" name="manager-o" />
-         
+            </span>
             <span class="login_span" v-else>
                 登录| 注册
             </span>
@@ -26,27 +29,35 @@
 <script setup lang="ts">
 import { defineProps, onMounted } from "vue";
 import { useUserInfo } from '@/store/userinfo'
+import { useRouter } from "vue-router";
 import { storeToRefs } from 'pinia';
 const store = useUserInfo();
 
+const router = useRouter();
 const { userInfo } = storeToRefs(store);
 
-
+console.log('uerInfo',userInfo.value)
+const goBack = ()=> router.go(-1);
 
 defineProps({
     titleText: {
         type: String,
         default: ''
     },
-    isShow: {
+    isShowRight: {
         type: Boolean,
         default: true
+    },
+    leftBtn:{
+      type:Boolean,
+      default: true
     }
 })
 
 onMounted(async () => {
     await store.get_userinfo();
 })
+
 
 
 </script>
@@ -85,5 +96,23 @@ onMounted(async () => {
         fill: #fff;
         @include wh(.8rem, .8rem);
     }
+
+    .user_info {
+        width: 50px;
+        @include sc(0.6rem, #fff);
+        overflow: hidden; //超出的文本隐藏
+        text-overflow: ellipsis; //溢出用省略号显示
+        white-space: nowrap; //溢出不换行
+        height:100%;
+        // display: flex;
+        // align-items: center;
+    }
+    .login_span {
+  left: 0.4rem;
+  font-weight: 400;
+  @include sc(0.6rem, #fff);
+  // @include wh(_, 0.7rem);
+  // @include ct; 
+}
 }
 </style>

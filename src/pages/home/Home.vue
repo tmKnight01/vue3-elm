@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header-top titleText="13246">
+    <header-top :leftBtn='false' titleText="13246">
       <template v-slot:left>
         <span class="head_logo">
           清河App

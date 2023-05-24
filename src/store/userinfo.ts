@@ -19,6 +19,7 @@ export const useUserInfo = defineStore(USERINFO.type, {
     record_userinfo(userinfo: UserInfo) {
       this.userInfo = userinfo;
       this.login = true;
+      console.log('user_id',userinfo.user_id);
       setStore("user_id", userinfo.user_id);
     },
     async get_userinfo() {
@@ -26,6 +27,7 @@ export const useUserInfo = defineStore(USERINFO.type, {
         const res = await getUser();
         console.log('res',res);
         this.userInfo = res;
+      
       } catch (err) {
         console.log("err", err);
       }

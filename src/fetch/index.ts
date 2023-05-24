@@ -2,9 +2,10 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
+  InternalAxiosRequestConfig,
 } from "axios";
-import { closeNotify, showToast } from "vant";
-import 'vant/es/toast/style';
+import { showToast } from "vant";
+import "vant/es/toast/style";
 const URL =
   import.meta.env.VITE_NODE_ENV == "development"
     ? "http://192.168.0.83:3000"
@@ -14,7 +15,7 @@ enum RequestEnums {
   TIMEOUT = 20000,
   OVERDUE = 600, // 登录失效
   FAIL = -1, // 请求失败
-  SUCCESS = 0 , // 请求成功 但返回值有问题
+  SUCCESS = 0, // 请求成功 但返回值有问题
 }
 
 // 定义请求响应参数， 不含data
@@ -32,9 +33,8 @@ const config: AxiosRequestConfig = {
   // headers: {
   //   Accept: "application/json",
   //   "Content-Type": "application/json",
-    
+
   // },
-  
 };
 
 class Fetch {
@@ -49,10 +49,10 @@ class Fetch {
     this.service.interceptors.response.use(
       (res: AxiosResponse) => {
         const { data } = res;
-        console.log('status',Boolean(Number(data.status) === RequestEnums.SUCCESS));
-        if ( Boolean(Number(data.status) === RequestEnums.SUCCESS) ) {
-          console.log('test')
-          showToast({ message:data.message , type: "fail" });
+        console.log("res1", data.stauts);
+        if (Number(data.status) === 0 || Number(data.status) === -1) {
+          console.log("test");
+          showToast({ message: data.message, type: "fail" });
           throw Error(data.message);
         }
 
@@ -60,12 +60,24 @@ class Fetch {
       },
       (err) => {
         if (err) {
-          showToast({ message: "Fetch Fail", type: "fail" });
+          showToast({ message: "接口请求异常，请稍后重试" });
           throw Error(`err: ${err}`);
         }
       }
     );
+    this.service.interceptors.request.use((config) => {
+      const { method } = config;
+      if (
+        method === "post" &&
+        Object.prototype.toString.call(config.data) === "[object FormData]"
+      ) {
+        config.headers["Content-Type"] = "multipart/form-data";
+      }
+
+      return config;
+    });
   }
+
   /*
    请求拦截器
  */

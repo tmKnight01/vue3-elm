@@ -35,13 +35,11 @@ export const login = async (data: loginParams): Promise<any> =>
   await fetch("v2/login", {
     method: "post",
     data,
-    headers: { "Content-Type": "multipart/form-data" },
   });
 
 /*
   获取用户信息
   */
-
 export const getUser = async (): Promise<UserInfo> =>
   await fetch("/v2/getUser", {
     method: "get",
