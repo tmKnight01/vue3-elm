@@ -78,7 +78,7 @@ const sortgroupcity = computed(() => {
       sortobj[String.fromCharCode(i)] = info.groupcity[String.fromCharCode(i)];
     }
   }
-  return sortobj;
+  return sortobj as any;
 });
 onMounted(async () => {
   try {

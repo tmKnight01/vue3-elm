@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+yarn.lock
+component.d.ts
 
 dist
 dist-ssr

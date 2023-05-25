@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-legacy": "^4.0.4",
     "axios": "^1.4.0",
     "pinia": "^2.0.36",
     "postcss": "^8.4.23",

@@ -2,7 +2,6 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
-  InternalAxiosRequestConfig,
 } from "axios";
 import { showToast } from "vant";
 import "vant/es/toast/style";
@@ -19,13 +18,13 @@ enum RequestEnums {
 }
 
 // 定义请求响应参数， 不含data
-interface Result {
-  status: number;
-}
+// interface Result {
+//   status: number;
+// }
 
-interface ResultData<T extends Result> {
-  data: T;
-}
+// interface ResultData<T extends Result> {
+//   data: T;
+// }
 const config: AxiosRequestConfig = {
   baseURL: URL,
   timeout: RequestEnums.TIMEOUT,

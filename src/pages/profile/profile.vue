@@ -23,29 +23,78 @@
                 </li>
                 <li className="info-data_item">
                     <div class="number">
-                        <span  :style="{color:'red'}">{{ reactiveUserState.count }}</span>
+                        <span :style="{ color: 'red' }">{{ reactiveUserState.count }}</span>
                         个
                     </div>
                     <div class="description ">我的优惠</div>
                 </li>
                 <li className="info-data_item">
                     <div class="number">
-                        <span :style="{color:'green'}">{{ reactiveUserState.pointNumber }}</span>
+                        <span :style="{ color: 'green' }">{{ reactiveUserState.pointNumber }}</span>
                         分
                     </div>
                     <div class="description">我的积分</div>
                 </li>
             </ul>
         </section>
+
+        <section class="profile-1reTe">
+            <!-- 我的订单 -->
+            <div class="profile-1reTe_item">
+                <span>
+                    <img src="@/assets/order.svg" alt=""> 我的订单
+                </span>
+                <van-icon name="arrow" size="20" />
+            </div>
+            <!-- 我的订单 -->
+            <div class="profile-1reTe_item">
+                <span>
+                    <img src="@/assets/sorce.svg" alt="">积分商城
+                </span>
+                <van-icon name="arrow" size="20" />
+            </div>
+            <!-- 饿了么会员卡 -->
+            <div class="profile-1reTe_item">
+                <span>
+                    <img src="@/assets/vip.svg" alt="">饿了么会员卡
+                </span>
+                <van-icon name="arrow" size="20" />
+            </div>
+        </section>
+
+
+        <section class="profile-1reTe">
+
+        <!-- 我的订单 -->
+        <div class="profile-1reTe_item">
+            <span>
+                <img src="@/assets/server.svg" alt=""> 服务中心
+            </span>
+            <van-icon name="arrow" size="20" />
+        </div>
+
+             <!-- 我的订单 -->
+             <div class="profile-1reTe_item">
+            <span>
+                <img src="@/assets/elm.svg" alt=""> 下载饿了么App
+            </span>
+            <van-icon name="arrow" size="20" />
+        </div>
+        </section>
+
     </section>
+    <footer-tab active="profile"/>
 </template>
 
 <script setup lang="ts">
 import HeaderTop from "@/components/Header.vue";
+import FooterTab from "@/components/FooterTab.vue";
 import { useUserInfo } from "@/store/userinfo";
 import { UserInfo } from "@/constants/store";
 import { onMounted, reactive, watch } from "vue";
 import { storeToRefs } from "pinia";
+// import order from '../../assets/订单.svg';
+
 
 const store = useUserInfo();
 const { userInfo } = storeToRefs(store);
@@ -97,10 +146,8 @@ onMounted(() => {
     justify-content: space-between;
     align-items: center;
     background-color: rgb(25, 137, 250);
-    // background-color: pink;
     width: 100%;
     height: 90px;
-
     padding: 0 0.3rem;
     padding-top: 1.95rem;
 
@@ -130,8 +177,6 @@ onMounted(() => {
         &>p {
             @include sc(0.6rem, $fc);
         }
-
-
     }
 }
 
@@ -172,6 +217,30 @@ onMounted(() => {
     &_item:nth-child(2) {
         border-right: 1px solid #f1f1f1;
         border-left: 1px solid #f1f1f1;
+    }
+}
+
+.profile-1reTe {
+    background: $fc;
+    margin-top: 1rem;
+
+    &_item {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid #f1f1f1;
+        padding: .433333rem .266667rem .433333rem 0;
+        @include sc(.7rem, #333);
+
+        &>span {
+            display: flex;
+            align-self: center;
+
+            &>img {
+                @include wh(.86667rem, .866667rem);
+                margin: 0 .2rem 0 .5rem;
+            }
+        }
     }
 }
 
