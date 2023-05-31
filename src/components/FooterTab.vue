@@ -1,5 +1,5 @@
 <template>
-    <tabbar :model-value="footerRef" class="footer-tab">
+    <tabbar v-model="footerRef" class="footer-tab">
         <tabbar-item name="msite" icon="shopping-cart">外卖</tabbar-item>
         <tabbar-item name="search" icon="search">搜索</tabbar-item>
         <tabbar-item name="order" icon="balance-list-o">订单</tabbar-item>
@@ -20,7 +20,7 @@ const prop = defineProps<{
     active: 'msite' | 'search' | 'order' | 'profile'
 }>()
 
-const footerRef = ref('');
+const footerRef = ref('profile');
 
 
 onMounted(()=>{
