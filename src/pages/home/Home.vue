@@ -1,16 +1,13 @@
 <template>
   <div>
-    <header-top :leftBtn='false' titleText="13246">
+    <header-top :leftBtn="false" titleText="13246">
       <template v-slot:left>
-        <span class="head_logo">
-          清河App
-        </span>
+        <span class="head_logo"> 清河App </span>
       </template>
 
       <!-- <template v-slot:right>
         <span class="head_info" @click="toLogin">登录|注册</span>
       </template> -->
-
     </header-top>
     <nav class="city_nav">
       <div class="city_tip">
@@ -20,27 +17,49 @@
       <router-link :to="'/city/' + info.guessCityid" class="guess_city">
         <span>{{ info.guessCity }}</span>
         <svg class="arrow_right">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+          <use
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xlink:href="#arrow-right"
+          ></use>
         </svg>
       </router-link>
     </nav>
     <section id="hot_city_container">
       <h4 class="city_title">热门城市</h4>
       <ul class="citylistul clear">
-        <li v-for="item in info.hotcity" :to="'/city/' + item.id" :key="item.id">
-          {{ item.name }}
-        </li>
+        <router-link
+          :to="'/city/' + item.id"
+          v-for="item in info.hotcity"
+          :key="item.id"
+        >
+          <li>
+            {{ item.name }}
+          </li>
+        </router-link>
       </ul>
+
+
+      
     </section>
     <section class="group_city_container">
       <ul class="letter_classify">
-        <li v-for="(value, key, index) in sortgroupcity" :key="key" class="letter_classify_li">
+        <li
+          v-for="(value, key, index) in sortgroupcity"
+          :key="key"
+          class="letter_classify_li"
+        >
           <h4 class="city_title">
             {{ key }}
             <span v-if="index == 0">（按字母排序）</span>
           </h4>
           <ul class="groupcity_name_container citylistul clear">
-            <router-link tag="li" v-for="item in value" :to="'/city/' + item.id" :key="item.id" class="ellipsis">
+            <router-link
+              tag="li"
+              v-for="item in value"
+              :to="'/city/' + item.id"
+              :key="item.id"
+              class="ellipsis"
+            >
               {{ item.name }}
             </router-link>
           </ul>
@@ -54,7 +73,7 @@
 import { reactive, computed, onMounted } from "vue";
 import { cityGuess, cityHotGuess } from "../../service/index";
 // import { useRouter } from "vue-router";
-import HeaderTop from '@/components/Header.vue';
+import HeaderTop from "@/components/Header.vue";
 interface reactiveData {
   guessCity: string; //当前城市
   guessCityid: string; //当前城市id
@@ -82,26 +101,18 @@ const sortgroupcity = computed(() => {
 });
 onMounted(async () => {
   try {
-    const [guessCity, hotCity] = await Promise.all([cityGuess(), cityHotGuess()]);
+    const [guessCity, hotCity] = await Promise.all([
+      cityGuess(),
+      cityHotGuess(),
+    ]);
 
     info.guessCity = guessCity.name;
     info.guessCityid = guessCity.id;
-    info.hotcity = hotCity
-
+    info.hotcity = hotCity;
   } catch (err) {
-    console.log('err:', err);
+    console.log("err:", err);
   }
-
-
 });
-
-
-// const toLogin = () => {
-//   router.push({
-//     name: 'login',
-
-//   })
-// }
 </script>
 
 <style lang="scss" scoped>
@@ -112,7 +123,7 @@ onMounted(async () => {
   font-weight: 400;
   @include sc(0.6rem, #fff);
   // @include wh(_, 0.7rem);
-  // @include ct; 
+  // @include ct;
 }
 
 .head_info {

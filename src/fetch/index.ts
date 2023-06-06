@@ -17,23 +17,10 @@ enum RequestEnums {
   SUCCESS = 0, // 请求成功 但返回值有问题
 }
 
-// 定义请求响应参数， 不含data
-// interface Result {
-//   status: number;
-// }
 
-// interface ResultData<T extends Result> {
-//   data: T;
-// }
 const config: AxiosRequestConfig = {
   baseURL: URL,
   timeout: RequestEnums.TIMEOUT,
-  withCredentials: true,
-  // headers: {
-  //   Accept: "application/json",
-  //   "Content-Type": "application/json",
-
-  // },
 };
 
 class Fetch {

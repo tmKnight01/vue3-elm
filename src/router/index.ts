@@ -13,10 +13,15 @@ const routes: readonly RouteRecordRaw[] = [
     name: "login",
   },
   {
-    path:"/profile",
-    component: () => import('../pages/profile/profile.vue'),
-    name: 'profile'
-  }
+    path: "/profile",
+    component: () => import("../pages/profile/profile.vue"),
+    name: "profile",
+  },
+  {
+    path: "/city/:city_id",
+    component: () => import("../pages/city/search.vue"),
+    name: "city",
+  },
 ];
 
 const router = createRouter({
