@@ -1,55 +1,67 @@
 <script lang="ts" setup>
 import HeaderTop from '@/components/Header.vue';
-import { defineProps, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { getCityById } from '../../service';
-
+import { getCityById, searchByAddress } from '../../service';
+import { CityLT } from '@/constants/service';
 
 const cityName = ref<string>('');
 const searchTarget = ref<string>('');
-const list = ref<Array<number>>([]);
-const loading = ref(false);
-const finished = ref(false);
+const list = ref<Array<CityLT>>([]);
+const loading = ref(true);
+const finished = ref(true);
 const route = useRoute();
+const page = ref<number>(1);
 
-
-/*  vue中没有了created钩子，在setup中直接调用就相当于created时机*/
+/*  vue3中没有了created钩子，在setup中直接调用就相当于created时机*/
 (async () => {
-    const { params } = route;
-    const city_info = await getCityById(Number(params.city_id));
-    cityName.value = city_info.name;
+  const { params } = route;
+  const city_info = await getCityById(Number(params.city_id));
+  cityName.value = city_info.name;
 })()
 
-const onLoad = () => {
-      // 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          list.value.push(list.value.length + 1);
-        }
+const onLoad = async () => {
+  console.log('onLoad...');
 
-        // 加载状态结束
-        loading.value = false;
+  // 异步更新数据
+  // setTimeout 仅做示例，真实场景中一般为 ajax 请求
+  page.value = ++page.value;
+  console.log('page', page);
 
-        // 数据全部加载完成
-        if (list.value.length >= 40) {
-          finished.value = true;
-        }
-      }, 1000);
-    };
+  loading.value = false;
+  const res = await searchByAddress({ keyword: value, city_id: Number(route.params.city_id), page: page.value, limit: 5 })
+  if (res.cityList.length) {
+    list.value = [list.value, ...res.cityList]
+  } else {
+    finished.value = true;
+    
+
+  }
+
+
+
+};
+const onSearch = async (value: string) => {
+  console.log('value', value);
+  const res = await searchByAddress({ keyword: value, city_id: Number(route.params.city_id), page: page.value,limit: 5})
+  if (res.cityList) {
+    list.value = [...res.cityList]
+  }
+}
+
 </script>
 
 
 
 
 <template>
-    <header-top :title-text="cityName"></header-top>
-    <div class="search_input">
-        <van-search placeholder="输入学校,家庭等地址" v-model="searchTarget" />
-    </div>
-    <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <van-cell v-for="item in list" :key="item" :title="item" />
-    </van-list>
+  <header-top :title-text="cityName"></header-top>
+  <div class="search_input">
+    <van-search placeholder="输入学校,家庭等地址" v-model="searchTarget" @search="onSearch" />
+  </div>
+  <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @onload="onLoad">
+    <van-cell v-for="item in list" :key="item.id" :title="item.address" />
+  </van-list>
 </template>
 
 

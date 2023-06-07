@@ -1,8 +1,8 @@
 import fetch from "../fetch/index";
-import { City, Capt, loginParams } from "../constants/service";
+import { City, Capt, loginParams,CityListResult } from "../constants/service";
 import { UserInfo } from "@/constants/store";
 import { getStore } from "@/utils/index";
-import { get } from "vant/lib/utils";
+
 /*
 获取首页默认地址
 */
@@ -54,10 +54,25 @@ export const getUser = async (): Promise<UserInfo> =>
   */
 
 export const getCityById = async (city_id: number): Promise<City> =>
-
   await fetch("/v1/city", {
     method: "get",
     params: {
       city_id,
     },
   });
+
+/*
+  查找附近位置接口
+  */
+
+export const searchByAddress = async (params: {
+  keyword: string;
+  city_id: number;
+  page: number;
+  limit: number;
+}):Promise<CityListResult> => 
+  await fetch("/v1/search", {
+    method: "get",
+    params:params,
+  });
+;

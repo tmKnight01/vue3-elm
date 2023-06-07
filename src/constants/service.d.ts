@@ -31,3 +31,17 @@ export interface loginParams {
   username: string;
 }
 
+
+export interface CityLT {
+  id: string;
+  address: string;
+  lat: number;
+  lng: number;
+}
+
+export interface CityListResult {
+ 
+  cityList: CityLT[];
+  message: string;
+  total: number;
+}
