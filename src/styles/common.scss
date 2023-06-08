@@ -41,9 +41,9 @@ figcaption {
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
 
-// &:hover {
-//     outline: none;
-// }
+    // &:hover {
+    //     outline: none;
+    // }
 }
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
@@ -155,4 +155,10 @@ body {
 
 .animation_opactiy {
     animation: backOpacity 2s ease-in-out infinite;
+}
+
+#app {
+    overflow-y: scroll;
+    height: 100%; // 或者 100vh  总之，给父级一个固定高度 
+
 }

@@ -35,7 +35,6 @@ class Fetch {
     this.service.interceptors.response.use(
       (res: AxiosResponse) => {
         const { data } = res;
-        console.log("res1", data.stauts);
         if (Number(data.status) === 0 || Number(data.status) === -1) {
           console.log("test");
           showToast({ message: data.message, type: "fail" });

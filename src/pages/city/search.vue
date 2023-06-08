@@ -4,14 +4,16 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getCityById, searchByAddress } from '../../service';
 import { CityLT } from '@/constants/service';
+import { onMounted } from 'vue';
 
 const cityName = ref<string>('');
 const searchTarget = ref<string>('');
 const list = ref<Array<CityLT>>([]);
-const loading = ref(true);
-const finished = ref(true);
+const loading = ref(false);
+const finished = ref(false);
 const route = useRoute();
 const page = ref<number>(1);
+// const 
 
 /*  vue3中没有了created钩子，在setup中直接调用就相当于created时机*/
 (async () => {
@@ -20,34 +22,37 @@ const page = ref<number>(1);
   cityName.value = city_info.name;
 })()
 
-const onLoad = async () => {
-  console.log('onLoad...');
+const onLoad = () => {
 
-  // 异步更新数据
-  // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-  page.value = ++page.value;
-  console.log('page', page);
+  console.log('loading', loading.value);
 
-  loading.value = false;
-  const res = await searchByAddress({ keyword: value, city_id: Number(route.params.city_id), page: page.value, limit: 5 })
-  if (res.cityList.length) {
-    list.value = [list.value, ...res.cityList]
-  } else {
-    finished.value = true;
-    
+  (async () => {
+    console.log('onloading');
 
-  }
+    page.value = page.value + 1;
+    const res = await searchByAddress({ keyword: searchTarget.value, city_id: Number(route.params.city_id), page: page.value, limit: 5 })
+    if (res.cityList?.length) {
+      list.value = [...list.value, ...res.cityList]
+      loading.value = false;
+    }
 
+    if (list.value.length >= res.total) {
+      finished.value = true
+    }
+  })()
+}
 
-
-};
 const onSearch = async (value: string) => {
   console.log('value', value);
-  const res = await searchByAddress({ keyword: value, city_id: Number(route.params.city_id), page: page.value,limit: 5})
+  const res = await searchByAddress({ keyword: value, city_id: Number(route.params.city_id), page: page.value, limit: 5 })
   if (res.cityList) {
     list.value = [...res.cityList]
   }
 }
+
+onMounted(()=>{
+  // onLoad();
+})
 
 </script>
 
@@ -59,7 +64,7 @@ const onSearch = async (value: string) => {
   <div class="search_input">
     <van-search placeholder="输入学校,家庭等地址" v-model="searchTarget" @search="onSearch" />
   </div>
-  <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @onload="onLoad">
+  <van-list v-if="list.length" v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
     <van-cell v-for="item in list" :key="item.id" :title="item.address" />
   </van-list>
 </template>
